@@ -1,0 +1,97 @@
+component TensionPulley
+% TensionPulley  :2.5
+%
+% Represents a massless pulley wrapped with an ideal non-slip cable.
+%
+% Connection S is a conserving rotational terminal associated with the pulley 
+% shaft. This port should be connected to a rotational damper to simulate 
+% viscous friction at the bearing and an inertia block to capture its inertial
+% qualities.
+%
+% Connections A and B are the conserving translational terminals for the cable 
+% that turns the pulley. Connection C is a conserving translational port which 
+% is connetcted to the axle bearing, which is free to translate in one dimension. 
+% When the angular velocity at S is positive,the translational velocity at A is 
+% negative. The sum of the forces on A and B is equal to C minus the torque on S.
+
+% Copyright 2014 The MathWorks, Inc.
+
+nodes
+  A = foundation.mechanical.translational.translational; % A:bottom
+  B = foundation.mechanical.translational.translational; % B:bottom
+  C = foundation.mechanical.translational.translational; % C:top
+  S = foundation.mechanical.rotational.rotational;       % S: top
+  
+end
+
+parameters
+  radius  = {0.1, 'm' };            % Pulley radius
+  b_damp  = {0.001, 'N*m/(rad/s)'}; % Viscous damping
+  inertia = {0.01, 'kg*m^2'};       % Pulley inertia
+  mass    = {1,    'kg'};           % Pulley mass
+  mu_s    = {1, '1'};               % Friction coefficient between cable and pulley
+end
+
+variables
+  f_A   = { 0, 'N' };      % Force at A
+  f_B   = { 0, 'N' };      % Force at B
+  f_C   = { 0, 'N' };      % Force at C
+  tau   = {0,  'N*m'};     % wheel torque
+  w     = {0, 'rad/s'};    % Angular velocity
+  v     = {0, 'm/s'};      % Linear velocity
+  
+  
+end
+
+function setup
+  % Parameter range checking
+  if radius <= 0
+    pm_error('simscape:GreaterThanZero','Pulley radius')
+  end
+  if b_damp < 0 
+    pm_error('simscape:GreaterThanEqualToZero', 'Viscous damping');
+  end
+  if inertia <= 0
+    pm_error('simscape:GreaterThanZero','Pulley intertia');
+  end
+  if mass <= 0
+     pm_error('simscape:GreaterThanZero','Pulley mass');
+  end
+
+end
+
+branches
+    f_A : A.f -> *;     % Force into port A
+    f_B : B.f -> *;     % Force into port B
+    f_C : C.f -> *;     % Force into port C
+    tau : S.t -> *;     % Torque into port S
+end
+
+equations
+  
+  let 
+    % Determine sign of velocity so we can apply friction in the right direction
+    num = (-v - w*radius);
+    delta = num/abs(num);
+   
+  in
+    % Torque on the pulley
+    inertia*w.der == tau + radius*(f_A - f_B)*mu_s - delta*b_damp * w;
+   
+    % Speed of the pulley
+    S.w == w;
+    
+    % Force on the pulley
+    mass*v.der == f_C - f_A - f_B;
+    
+    % Record the velocity of the pulley
+    v == C.v;
+    
+    % Rope velocities 
+    A.v == -C.v + radius*w;
+    B.v == -C.v - radius*w;
+    
+  end
+end
+
+end

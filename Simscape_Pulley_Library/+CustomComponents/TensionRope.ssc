@@ -1,0 +1,93 @@
+component TensionRope
+    % TensionRope : 2.7
+    %
+    % The block represents an ideal rope with inertia, stiffness and damping.
+    %
+    % Connections R and C are mechanical translational conserving ports.
+    %
+    % Copyright 2014 The MathWorks, Inc.
+    
+    nodes
+        A = foundation.mechanical.translational.translational; % A:left
+        B = foundation.mechanical.translational.translational; % B:right
+    end
+    
+    parameters
+        rope_stiff = {1000, 'N/m' };  % Rope stiffness
+        damping    = {1, 'N/(m/s)'};  % Rope damping coefficient
+        L0         = {1, 'm'};        % Initial rope length
+        mass       = {1, 'kg'};       % Typical rope mass
+    end
+    
+    variables
+        s = { 0, 'm'};      % Stretch
+        L = { 1, 'm'};      % Total Length
+        f   = {0, 'N' };      % Total rope force
+        v   = {0, 'm/s'};     % Rope velocity
+        fd = {0, 'N'};        % Damping force
+        fs = {0, 'N'};        % Elastic force
+    end
+    
+%     variables(Hidden=true)
+%         
+%         
+%         
+%     end
+%     
+    function setup
+    if rope_stiff <= 0
+        pm_error('simscape:GreaterThanZero','Rope stiffness');
+    end
+    if damping <= 0
+        pm_error('simscape:GreaterThanZero','Rope damping');
+    end
+    if L0 <= 0
+        pm_error('simscape:GreaterThanZero','Initial rope length' );
+    end
+    if mass <= 0
+        pm_error('simscape:GreaterThanZero','Rope mass' );
+    end
+    end
+    
+    
+    branches
+        f : A.f -> B.f;     % The rope has a definite direction
+    end
+    
+    
+    equations
+        
+        % Velocity is difference between ports
+        v == A.v - B.v;
+        
+        % Track the length of the rope
+        L == L0 + s;
+        
+        % Rate of change of length
+        s.der == v;
+        
+        % Apply force when the rope is stretched
+        if s >= 0
+            fs == rope_stiff * s;
+        else
+            fs == {1e-8, 'N/m'} * s;         % Non-zero force to keep the solver happy
+        end
+        
+        % Apply damping when the rope is stretching
+        if v >= 0
+            fd == damping * v;
+        else
+            fd == {1e-8, 'N/(m/s)'} * v;      % Small damping keeps solver happy
+        end
+        
+        % Rope acceleration
+        f == fs + fd + mass * v.der;
+        
+        % Make sure the length is positive
+        %    -- if we get here the rope is probably oriented backward
+%         assert(L >= 0, 'Rope too short!');
+        
+        
+    end
+    
+end
