@@ -4,6 +4,8 @@ A drawworks is a piece of heavy equipment used in the oil and gas industry
 for drilling applications. The variable frequency drive (VFD) is used to 
 raise and lower drill string and the top drive during the drilling process.
 
+[![View Drawworks Electro-Mechanical Simulation for Oil/Gas Applicat on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/64941-drawworks-electro-mechanical-simulation-for-oil-gas-applicat)
+
 This simulation can be used for actuator sizing and for Hardware-in-the-loop
 simulations. Feel free to add and remove blocks as necessary.
 
