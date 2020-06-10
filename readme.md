@@ -10,19 +10,15 @@ This simulation can be used for actuator sizing and for Hardware-in-the-loop
 simulations. Feel free to add and remove blocks as necessary.
 
 Included models:
-- drawWorks_Sim_DriveBlk.slx - this model has a Simscape Power Systems
+- drawWorks_Sim.slx - this model has a Simscape Power Systems
     higher fidelity model of the VFD.
-- drawWorks_Sim_GenericDrive.slx - this model has a simple drive model with
-    torque/speed limits, but no electric power modeling
+- The Additional_Examples folder has many other examples used in the Video Series on various topics
+- Under the "Additional_Examples/FlexiblePulley_LegacyVersion", you can find the classic Drawworks implementation
 
 ## Getting Started:
 
 To run this example:
-1) Open either *.slx model.
-2) The model should add the "Image" directory and "Simscape_Pulley_Library"
-    to the MATLAB path. If not, right click on these directories and add to
+1) Open the *.slx model.
+2) The model should add the "CAD_Files" folder to the MATLAB path. If not, right click on these directories and add to
     the path manually.
-3) Run the models to see the dynamic response.
-4) It might be required to rebuild the Simscape library for the traveling
-    pulleys in older releases. Use the "ssc_build" command:
-    https://www.mathworks.com/help/physmod/simscape/ref/ssc_build.html
+3) Run the model to see the dynamic response.
