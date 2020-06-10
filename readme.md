@@ -15,6 +15,8 @@ Included models:
 - The Additional_Examples folder has many other examples used in the Video Series on various topics
 - Under the "Additional_Examples/FlexiblePulley_LegacyVersion", you can find the classic Drawworks implementation
 
+![](https://github.com/jonlesage/Drawworks-DrillSim/blob/master/Additional_Examples/Drawworks_Animation.GIF)
+
 ## Getting Started:
 
 To run this example:
