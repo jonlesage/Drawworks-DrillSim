@@ -10,10 +10,9 @@ This simulation can be used for actuator sizing and for Hardware-in-the-loop
 simulations. Feel free to add and remove blocks as necessary.
 
 Included models:
-- drawWorks_Sim.slx - this model has a Simscape Power Systems
-    higher fidelity model of the VFD.
+- drawWorks_Sim.slx - this model has a Simscape Electrical model of the VFD.
 - The Additional_Examples folder has many other examples used in the Video Series on various topics
-- Under the "Additional_Examples/FlexiblePulley_LegacyVersion", you can find the classic Drawworks implementation
+- Under the "Additional_Examples/FlexiblePulley_LegacyVersion", you can find the classic Drawworks implementation with flexible cabling
 
 ![](https://github.com/jonlesage/Drawworks-DrillSim/blob/master/Additional_Examples/Drawworks_Animation.GIF)
 
